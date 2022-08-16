@@ -26,8 +26,8 @@
             position: absolute;
             top: 0;
             right: 0;
-            width: 400px;
-            height: 300px;
+            width: 250px;
+            height: 250px;
             z-index: 1;
             overflow: hidden;
         }
@@ -123,7 +123,7 @@
             view.ui.add("aboutDiv", "top-left");
 
             const insetMap = new Map({
-                basemap: communityboundairesESRIBasemap
+                basemap: 'gray-vector'
             });
             const insetView = new MapView({
                 container: "overviewDiv",
