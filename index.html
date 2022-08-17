@@ -89,7 +89,7 @@
             const view = new MapView({
                 container: "viewDiv",
                 map: webmap,
-                zoom: 18,
+                zoom: 16,
                 center: [-83.04799999999994, 42.33168000000006], // longitude, latitude
             });
 
@@ -115,6 +115,13 @@
                 editingEnabled: false,
             });
             view.ui.add(bookmarks, "bottom-left");
+
+            bookmarks.on("bookmark-select", function (event) {
+                console.log(event.bookmark.name)
+                let current_bookmark = document.getElementById('current_bookmark');
+                current_bookmark.innerText = event.bookmark.name
+
+            });
             // create a layerlist and expand widget and add to the view
             const layerList = new LayerList({
                 view: view
@@ -122,12 +129,16 @@
             view.ui.add(layerList, "bottom-right");
             view.ui.add("aboutDiv", "top-left");
 
-            const insetMap = new Map({
-                basemap: 'gray-vector'
+            const insetwebmap = new WebMap({
+                portalItem: {
+                    // autocasts as new PortalItem()
+                    id: "d922195dc4a142f49ad1de81584aee84"
+                }
             });
+
             const insetView = new MapView({
                 container: "overviewDiv",
-                map: insetMap,
+                map: insetwebmap,
                 constraints: {
                     rotationEnabled: false
                 }
@@ -199,6 +210,7 @@
         of the screen to slide the historical imagery back and forth or use the Layer List (eyeball symbol) to toggle
         the layer on and off. Use the bookmarks on the bottom left to zoom to a specific location. Pinch to zoom and/or
         touch the screen to pan.</p>
+    <h2 id="current_bookmark">Detroit - Downtown</h2>
 </div>
 </body>
 </html>
