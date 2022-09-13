@@ -39,11 +39,13 @@
         }
 
         #aboutDiv {
-            padding: 8px;
+            padding: 20px;
             background-color: #303030;;
             color: #d1d1d1;
-            text-align: center;
             width: 500px;
+        }
+        .esri-bookmarks{
+            max-height: 300px !important;
         }
     </style>
 
@@ -59,10 +61,11 @@
             "esri/layers/VectorTileLayer",
             "esri/widgets/LayerList",
             "esri/widgets/Swipe",
+            "esri/widgets/Home",
             "esri/Graphic",
             "esri/core/reactiveUtils",
             "esri/core/promiseUtils"
-        ], (Map, WebMap, Basemap, MapView, Bookmarks, MapImageLayer, WebTileLayer, VectorTileLayer, LayerList, Swipe, Graphic, reactiveUtils, promiseUtils) => {
+        ], (Map, WebMap, Basemap, MapView, Bookmarks, MapImageLayer, WebTileLayer, VectorTileLayer, LayerList, Swipe, Home, Graphic, reactiveUtils, promiseUtils) => {
             const webmap = new WebMap({
                 portalItem: {
                     // autocasts as new PortalItem()
@@ -81,28 +84,34 @@
                 //thumbnailUrl: "https://semcog.maps.arcgis.com/sharing/rest/content/items/6db68c2945dc4031a7f1817cf7d6a3d8/info/thumbnail/thumbnail1547041274700.png"
             });
 
-            const now = new WebTileLayer({
-                urlTemplate: "https://api.nearmap.com/tiles/v3/Vert/{z}/{x}/{y}.img?apikey=MDFkNTM3YzUtYjM2ZS00Yzc3LTlmMzAtZjg4NmFjZmE1ZjEy",
-                title: "Now"
-            });
-            webmap.add(now);
             const view = new MapView({
                 container: "viewDiv",
                 map: webmap,
+                constraints: {
+                    rotationEnabled: false
+                },
                 zoom: 16,
                 center: [-83.04799999999994, 42.33168000000006], // longitude, latitude
             });
+            const homeBtn = new Home({
+                view: view
+            });
 
+            homeBtn.on('go', function () {
+                current_bookmark.innerText = "Detroit - Downtown"
+            })
+
+            // Add the home button to the top left corner of the view
+            view.ui.add(homeBtn, "bottom-right");
             view.ui.move(["zoom"], "bottom-right");
             view.when(function () {
-                const then = webmap.layers.getItemAt(1);
+                const then = webmap.layers.getItemAt(0);
                 then.listMode = 'hide-children'
-                const office = webmap.layers.getItemAt(2);
+                const office = webmap.layers.getItemAt(1);
                 office.listMode = 'hide'
                 // create a new Swipe widget
                 const swipe = new Swipe({
                     leadingLayers: [then],
-                    trailingLayers: [now],
                     position: 75, // set position of widget to 35%
                     view: view
                 });
@@ -120,7 +129,6 @@
                 console.log(event.bookmark.name)
                 let current_bookmark = document.getElementById('current_bookmark');
                 current_bookmark.innerText = event.bookmark.name
-
             });
             // create a layerlist and expand widget and add to the view
             const layerList = new LayerList({
@@ -204,13 +212,16 @@
     <div id="extentDiv"></div>
 </div>
 <div id="aboutDiv" class="esri-widget">
-    <h1>Then and Now</h1>
-    <p>Get lost in 1950 and see what a few curated places around Southeast Michigan looked like compared to now. Use the
-        Swipe tool at the middle
-        of the screen to slide the historical imagery back and forth or use the Layer List (eyeball symbol) to toggle
-        the layer on and off. Use the bookmarks on the bottom left to zoom to a specific location. Pinch to zoom and/or
-        touch the screen to pan.</p>
-    <h2 id="current_bookmark">Detroit - Downtown</h2>
+    <img src="logo.svg" alt="logo" style="height: 15px">
+    <h1 style="text-align: center">Then and Now</h1>
+    <p>Get lost in 1950 and see what a few curated places around Southeast Michigan looked like compared to now.</p>
+    <ul>
+        <li>use the Swipe tool at the middle of the screen to slide the historical imagery back and forth</li>
+        <li>use the Layer List (eyeball symbol) to toggle the layer on and off</li>
+        <li>use the bookmarks on the bottom left to zoom to a specific location</li>
+        <li>pinch to zoom and/or touch the screen to pan.</li>
+    </ul>
+    <h2 style="text-align: center" id="current_bookmark">Detroit - Downtown</h2>
 </div>
 </body>
 </html>
