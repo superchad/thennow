@@ -26,8 +26,8 @@
             position: absolute;
             top: 0;
             right: 0;
-            width: 250px;
-            height: 250px;
+            width: 240px;
+            height: 240px;
             z-index: 1;
             overflow: hidden;
         }
@@ -39,10 +39,10 @@
         }
 
         #aboutDiv {
-            padding: 20px;
+            padding: 12px;
             background-color: #303030;;
             color: #d1d1d1;
-            width: 500px;
+            width: 390px;
         }
         .esri-bookmarks{
             max-height: 300px !important;
@@ -155,6 +155,56 @@
             // Remove the default widgets
             insetView.ui.components = [];
 
+            insetView.when(disableZooming)
+
+            function disableZooming(view) {
+
+                // stops propagation of default behavior when an event fires
+                function stopEvtPropagation(event) {
+                    event.stopPropagation();
+                }
+
+                // exlude the zoom widget from the default UI
+
+                // disable mouse wheel scroll zooming on the view
+                view.on("mouse-wheel", stopEvtPropagation);
+
+                // disable zooming via double-click on the view
+                view.on("double-click", stopEvtPropagation);
+
+                // disable zooming out via double-click + Control on the view
+                view.on("double-click", ["Control"], stopEvtPropagation);
+
+                // disables pinch-zoom and panning on the view
+                view.on("drag", stopEvtPropagation);
+
+                // disable the view's zoom box to prevent the Shift + drag
+                // and Shift + Control + drag zoom gestures.
+                view.on("drag", ["Shift"], stopEvtPropagation);
+                view.on("drag", ["Shift", "Control"], stopEvtPropagation);
+
+                // prevents zooming with the + and - keys
+                view.on("key-down", (event) => {
+                    const prohibitedKeys = [
+                        "+",
+                        "-",
+                        "Shift",
+                        "_",
+                        "=",
+                        "ArrowUp",
+                        "ArrowDown",
+                        "ArrowRight",
+                        "ArrowLeft"
+                    ];
+                    const keyPressed = event.key;
+                    if (prohibitedKeys.indexOf(keyPressed) !== -1) {
+                        event.stopPropagation();
+                    }
+                });
+
+                return view;
+            }
+
             insetView.when(() => {
                 view.when(() => {
                     setup();
@@ -213,15 +263,15 @@
 </div>
 <div id="aboutDiv" class="esri-widget">
     <img src="logo.svg" alt="logo" style="height: 15px">
-    <h1 style="text-align: center">Then and Now</h1>
-    <p>Get lost in 1950 and see what a few curated places around Southeast Michigan looked like compared to now.</p>
-    <ul>
+    <h2 style="text-align: center">Then and Now</h2>
+    <p style="font-size: .95em">Get lost in 1950 and see what a few curated places around Southeast Michigan looked like compared to now.</p>
+    <ul style="font-size: .95em">
         <li>use the Swipe tool at the middle of the screen to slide the historical imagery back and forth</li>
         <li>use the Layer List (eyeball symbol) to toggle the layer on and off</li>
         <li>use the bookmarks on the bottom left to zoom to a specific location</li>
         <li>pinch to zoom and/or touch the screen to pan.</li>
     </ul>
-    <h2 style="text-align: center" id="current_bookmark">Detroit - Downtown</h2>
+    <h3 style="text-align: center" id="current_bookmark">Detroit - Downtown</h3>
 </div>
 </body>
 </html>
