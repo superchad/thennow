@@ -44,8 +44,22 @@
             color: #d1d1d1;
             width: 390px;
         }
-        .esri-bookmarks{
+
+        a:visited {
+            color: #d1d1d1;
+        }
+
+        .esri-bookmarks {
             max-height: 300px !important;
+        }
+
+        .button {
+            height: 5px;
+            width: 20px;
+            border-radius: 2px;
+            border: #d1d1d1a3 solid 1px;
+            padding: 3px;
+            font-size: .8em;
         }
     </style>
 
@@ -263,8 +277,13 @@
 </div>
 <div id="aboutDiv" class="esri-widget">
     <img src="logo.svg" alt="logo" style="height: 15px">
+<!--    <button style='float: right; color: #d1d1d1; font-size: .8em' class="esri-widget"><a style="margin: 3px" href="./">Reset</a></button>-->
+
+    <a style='float: right; color: #d1d1d1a3;' href="./"><span class="esri-widget button">Reset</span></a>
+
     <h2 style="text-align: center">Then and Now</h2>
-    <p style="font-size: .95em">Get lost in 1950 and see what a few curated places around Southeast Michigan looked like compared to now.</p>
+    <p style="font-size: .95em">Get lost in 1950 and see what a few curated places around Southeast Michigan looked like
+        compared to now.</p>
     <ul style="font-size: .95em">
         <li>use the Swipe tool at the middle of the screen to slide the historical imagery back and forth</li>
         <li>use the Layer List (eyeball symbol) to toggle the layer on and off</li>
