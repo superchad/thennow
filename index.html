@@ -1,296 +1,85 @@
-<html>
+﻿<!DOCTYPE html>
+<html lang="en">
+
 <head>
-    <meta charset="utf-8"/>
-    <meta
-            name="viewport"
-            content="initial-scale=1,maximum-scale=1,user-scalable=no"
-    />
-    <title>Then (1950) and Now</title>
+    <meta charset="utf-8">
 
-    <link
-            rel="stylesheet"
-            href="https://js.arcgis.com/4.24/esri/themes/dark/main.css"
-    />
-    <script src="https://js.arcgis.com/4.24/"></script>
-    <style>
-        html,
-        body,
-        #viewDiv {
-            padding: 0;
-            margin: 0;
-            height: 100%;
-            width: 100%;
-        }
+    <title>SEMCOG Then and Now</title>
 
-        #overviewDiv {
-            position: absolute;
-            top: 0;
-            right: 0;
-            width: 240px;
-            height: 240px;
-            z-index: 1;
-            overflow: hidden;
-        }
+    <meta name="description" content="Map showing images from 1950 throughout Southeast Michigan.">
 
-        #extentDiv {
-            background-color: rgba(0, 0, 0, 0.5);
-            position: absolute;
-            z-index: 2;
-        }
+    <!-- Social sharing -->
+    <meta property="og:type" content="website"/> 
+    <meta property="og:title" content="Then and Now"/>
+    <meta property="og:description" content="Map showing images from 1950 throughout Southeast Michigan."/>
+    <meta property="og:site_name" content="SEMCOG.org" />
+    <meta property="og:url" content="https://maps.semcog.org/thennow/" />
 
-        #aboutDiv {
-            padding: 12px;
-            background-color: #303030;;
-            color: #d1d1d1;
-            width: 390px;
-        }
+    <meta property="og:image" content=""/>
+    <meta property="og:image:secure_url" content=""/>
+    <meta property="og:image:alt" content="Map of images from 1950."/>
+    <meta property="og:image:width" content="1200"/>
+    <meta property="og:image:height" content="600"/>
 
-        a:visited {
-            color: #d1d1d1;
-        }
 
-        .esri-bookmarks {
-            max-height: 300px !important;
-        }
-
-        .button {
-            height: 5px;
-            width: 20px;
-            border-radius: 2px;
-            border: #d1d1d1a3 solid 1px;
-            padding: 3px;
-            font-size: .8em;
-        }
-    </style>
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=yes">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    
+    <!-- You need the following 3 links for the split header -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.3/css/bootstrap.min.css" integrity="sha384-Zug+QiDoJOrZ5t4lssLdxGhVrurbmBWopoEl+M6BdEfwnCJZtKxi1KgxUyJq13dy"
+        crossorigin="anonymous">
+    <!-- SEMCOG header stylesheet -->
+    <link rel="stylesheet" type="text/css" href="https://maps.semcog.org/header/header.css">
+    <link href="style.css" type="text/css" rel="stylesheet" />
 
     <script>
-        require([
-            "esri/Map",
-            "esri/WebMap",
-            "esri/Basemap",
-            "esri/views/MapView",
-            "esri/widgets/Bookmarks",
-            "esri/layers/MapImageLayer",
-            "esri/layers/WebTileLayer",
-            "esri/layers/VectorTileLayer",
-            "esri/widgets/LayerList",
-            "esri/widgets/Swipe",
-            "esri/widgets/Home",
-            "esri/Graphic",
-            "esri/core/reactiveUtils",
-            "esri/core/promiseUtils"
-        ], (Map, WebMap, Basemap, MapView, Bookmarks, MapImageLayer, WebTileLayer, VectorTileLayer, LayerList, Swipe, Home, Graphic, reactiveUtils, promiseUtils) => {
-            const webmap = new WebMap({
-                portalItem: {
-                    // autocasts as new PortalItem()
-                    id: "c47b63898ef5458b855a29014c2989e0"
-                }
-            });
+        (function (i, s, o, g, r, a, m) {
+            i['GoogleAnalyticsObject'] = r;
+            i[r] = i[r] || function () {
+                (i[r].q = i[r].q || []).push(arguments)
+            }, i[r].l = 1 * new Date();
+            a = s.createElement(o),
+                m = s.getElementsByTagName(o)[0];
+            a.async = 1;
+            a.src = g;
+            m.parentNode.insertBefore(a, m)
+        })(window, document, 'script', '//www.google-analytics.com/analytics.js', 'ga');
 
-            let communityboundairesESRI = new VectorTileLayer({
-                url: "https://tiles.arcgis.com/tiles/xUx8EjNc6egUPYWh/arcgis/rest/services/Community_Boundaries/VectorTileServer"
-            });
-
-            let communityboundairesESRIBasemap = new Basemap({
-                baseLayers: [communityboundairesESRI],
-                title: "communityboundairesESRI",
-                id: "communityboundaires-esri",
-                //thumbnailUrl: "https://semcog.maps.arcgis.com/sharing/rest/content/items/6db68c2945dc4031a7f1817cf7d6a3d8/info/thumbnail/thumbnail1547041274700.png"
-            });
-
-            const view = new MapView({
-                container: "viewDiv",
-                map: webmap,
-                constraints: {
-                    rotationEnabled: false
-                },
-                zoom: 16,
-                center: [-83.04799999999994, 42.33168000000006], // longitude, latitude
-            });
-            const homeBtn = new Home({
-                view: view
-            });
-
-            homeBtn.on('go', function () {
-                current_bookmark.innerText = "Detroit - Downtown"
-            })
-
-            // Add the home button to the top left corner of the view
-            view.ui.add(homeBtn, "bottom-right");
-            view.ui.move(["zoom"], "bottom-right");
-            view.when(function () {
-                const then = webmap.layers.getItemAt(0);
-                then.listMode = 'hide-children'
-                const office = webmap.layers.getItemAt(1);
-                office.listMode = 'hide'
-                // create a new Swipe widget
-                const swipe = new Swipe({
-                    leadingLayers: [then],
-                    position: 75, // set position of widget to 35%
-                    view: view
-                });
-                // add the widget to the view
-                view.ui.add(swipe);
-            })
-            const bookmarks = new Bookmarks({
-                view: view,
-                // allows bookmarks to be added, edited, or deleted
-                editingEnabled: false,
-            });
-            view.ui.add(bookmarks, "bottom-left");
-
-            bookmarks.on("bookmark-select", function (event) {
-                console.log(event.bookmark.name)
-                let current_bookmark = document.getElementById('current_bookmark');
-                current_bookmark.innerText = event.bookmark.name
-            });
-            // create a layerlist and expand widget and add to the view
-            const layerList = new LayerList({
-                view: view
-            });
-            view.ui.add(layerList, "bottom-right");
-            view.ui.add("aboutDiv", "top-left");
-
-            const insetwebmap = new WebMap({
-                portalItem: {
-                    // autocasts as new PortalItem()
-                    id: "d922195dc4a142f49ad1de81584aee84"
-                }
-            });
-
-            const insetView = new MapView({
-                container: "overviewDiv",
-                map: insetwebmap,
-                constraints: {
-                    rotationEnabled: false
-                }
-            });
-
-            // Remove the default widgets
-            insetView.ui.components = [];
-
-            insetView.when(disableZooming)
-
-            function disableZooming(view) {
-
-                // stops propagation of default behavior when an event fires
-                function stopEvtPropagation(event) {
-                    event.stopPropagation();
-                }
-
-                // exlude the zoom widget from the default UI
-
-                // disable mouse wheel scroll zooming on the view
-                view.on("mouse-wheel", stopEvtPropagation);
-
-                // disable zooming via double-click on the view
-                view.on("double-click", stopEvtPropagation);
-
-                // disable zooming out via double-click + Control on the view
-                view.on("double-click", ["Control"], stopEvtPropagation);
-
-                // disables pinch-zoom and panning on the view
-                view.on("drag", stopEvtPropagation);
-
-                // disable the view's zoom box to prevent the Shift + drag
-                // and Shift + Control + drag zoom gestures.
-                view.on("drag", ["Shift"], stopEvtPropagation);
-                view.on("drag", ["Shift", "Control"], stopEvtPropagation);
-
-                // prevents zooming with the + and - keys
-                view.on("key-down", (event) => {
-                    const prohibitedKeys = [
-                        "+",
-                        "-",
-                        "Shift",
-                        "_",
-                        "=",
-                        "ArrowUp",
-                        "ArrowDown",
-                        "ArrowRight",
-                        "ArrowLeft"
-                    ];
-                    const keyPressed = event.key;
-                    if (prohibitedKeys.indexOf(keyPressed) !== -1) {
-                        event.stopPropagation();
-                    }
-                });
-
-                return view;
-            }
-
-            insetView.when(() => {
-                view.when(() => {
-                    setup();
-                });
-            });
-
-            const extentDebouncer = promiseUtils.debounce(() => {
-                insetView.goTo({
-                    center: view.center,
-                    scale:
-                        view.scale *
-                        3 *
-                        Math.max(
-                            view.width / insetView.width,
-                            view.height / insetView.height
-                        )
-                });
-
-            });
-
-            function setup() {
-                const extent3Dgraphic = new Graphic({
-                    geometry: null,
-                    symbol: {
-                        type: "simple-fill",
-                        color: [0, 0, 0, 0.5],
-                        outline: null
-                    }
-                });
-
-                insetView.graphics.add(extent3Dgraphic);
-
-                reactiveUtils.watch(
-                    () => view.extent,
-                    (extent) => {
-                        // Sync the overview map location
-                        // whenever the 3d view is stationary
-                        extentDebouncer().then(() => {
-                            extent3Dgraphic.geometry = extent;
-                        });
-                    },
-                    {
-                        initial: true
-                    }
-                );
-            }
-
-        });
+        ga('create', 'UA-5355512-14', 'auto');
+        ga('send', 'pageview');
     </script>
 </head>
 
 <body>
-<div id="viewDiv"></div>
-<div id="overviewDiv">
-    <div id="extentDiv"></div>
-</div>
-<div id="aboutDiv" class="esri-widget">
-    <img src="logo.svg" alt="logo" style="height: 15px">
-<!--    <button style='float: right; color: #d1d1d1; font-size: .8em' class="esri-widget"><a style="margin: 3px" href="./">Reset</a></button>-->
 
-    <a style='float: right; color: #d1d1d1a3;' href="./"><span class="esri-widget button">Reset</span></a>
+    <!-- You need this HTML for the split header -->
+    <div class="container-fluid">
+        <header class="row" role="banner">
+            <div id="divLeft" class="col-xs-12 col-sm-6 col-md-6 col-lg-6 col-xl-6">
+                <div class="site-header" >
+                    <div class="header-container">
+                        <div class="container">
+                            <h1 class="site-title">
+                                <a href="//www.semcog.org" class="site-logo" target="_parent">
+                                    SEMCOG | Southeast Michigan Council of Governments
+                                </a>
+                            </h1>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div id="divRight" class="col-xs-2 col-sm-6 col-md-6 col-lg-6 col-xl-6">
+                <ul id="divRightContent">
+                    <li id="mapName">Then and Now</li>
+                </ul>
+            </div>
+        </header>
+    </div>
 
-    <h2 style="text-align: center">Then and Now</h2>
-    <p style="font-size: .95em">Get lost in 1950 and see what a few curated places around Southeast Michigan looked like
-        compared to now.</p>
-    <ul style="font-size: .95em">
-        <li>use the Swipe tool at the middle of the screen to slide the historical imagery back and forth</li>
-        <li>use the Layer List (eyeball symbol) to toggle the layer on and off</li>
-        <li>use the bookmarks on the bottom left to zoom to a specific location</li>
-        <li>pinch to zoom and/or touch the screen to pan.</li>
-    </ul>
-    <h3 style="text-align: center" id="current_bookmark">Detroit - Downtown</h3>
-</div>
+
+    <main role="main">
+        <iframe title="Map showing images from 1950 throughout Southeast Michigan." src="index_no_header.html" allowfullscreen webkitallowfullscreen mozallowfullscreen oallowfullscreen msallowfullscreen></iframe>
+    </main>
 </body>
+
 </html>

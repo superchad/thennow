@@ -1,0 +1,64 @@
+    
+/* You need all this css for the split header */
+/* You also need the SEMCOG.JPG in the img folder */
+/* header styling */
+#divLeft {
+    background-color: #64983d;
+    height: 83px;
+}
+
+#divRight {
+    background: #64983D;
+    height: 83px;
+    padding-top: 5px;
+    border-bottom: 2px solid #011f4a;
+}
+
+#divRightContent {
+    display: flex;
+    justify-content: space-between;
+}
+
+#mapName {
+    display: inline;
+    font-weight: 700;
+    font-size: 2.25rem;
+    color: #FFFFFF;
+    padding: 10px;
+}
+
+iframe {
+    height: calc(100vh - 90px);
+    width: 100%;
+    border-style: none;
+}
+
+@media (min-width: 768px) {
+    #divLeft {
+        border-bottom: 83px solid #011f4a;
+        border-right: 83px solid transparent;
+    }
+}
+
+@media (max-width: 768px) {
+    #divLeft {
+        height: 57px;
+        background-color: #011f4a;
+    }
+    #divRight {
+        height: 57px;
+    }
+}
+
+@media (max-width: 1100px) {
+    #mapName {
+        font-size: 1.75rem;
+        padding: 0px;
+    }
+}
+
+@media (max-width: 720px) {
+    #mapName {
+        font-size: 1.5rem;
+    }
+}
