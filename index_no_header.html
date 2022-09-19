@@ -77,9 +77,10 @@
             "esri/widgets/Swipe",
             "esri/widgets/Home",
             "esri/Graphic",
+            "esri/widgets/Expand",
             "esri/core/reactiveUtils",
             "esri/core/promiseUtils"
-        ], (Map, WebMap, Basemap, MapView, Bookmarks, MapImageLayer, WebTileLayer, VectorTileLayer, LayerList, Swipe, Home, Graphic, reactiveUtils, promiseUtils) => {
+        ], (Map, WebMap, Basemap, MapView, Bookmarks, MapImageLayer, WebTileLayer, VectorTileLayer, LayerList, Swipe, Home, Graphic, Expand, reactiveUtils, promiseUtils) => {
             const webmap = new WebMap({
                 portalItem: {
                     // autocasts as new PortalItem()
@@ -150,7 +151,16 @@
                 view: view
             });
             view.ui.add(layerList, "bottom-right");
-            view.ui.add("aboutDiv", "top-left");
+
+            let aboutSection = new Expand({
+                expandIconClass: "esri-icon-question",  // see https://developers.arcgis.com/javascript/latest/guide/esri-icon-font/
+                expandTooltip: "About", // optional, defaults to "Expand" for English locale
+                view: view,
+                expanded: true,
+                content: document.getElementById('aboutDiv')
+            });
+
+            view.ui.add(aboutSection, "top-left");
 
             const insetwebmap = new WebMap({
                 portalItem: {
