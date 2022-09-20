@@ -61,6 +61,13 @@
             padding: 3px;
             font-size: .8em;
         }
+
+        @media (max-width: 768px) {
+            #overviewDiv {
+                display: none;
+            }
+        }
+
     </style>
 
     <script>
@@ -151,6 +158,7 @@
                 view: view
             });
             view.ui.add(layerList, "bottom-right");
+            view.ui.add('aboutDiv', "top-left");
 
             let aboutSection = new Expand({
                 expandIconClass: "esri-icon-question",  // see https://developers.arcgis.com/javascript/latest/guide/esri-icon-font/
@@ -160,7 +168,6 @@
                 content: document.getElementById('aboutDiv')
             });
 
-            view.ui.add(aboutSection, "top-left");
 
             const insetwebmap = new WebMap({
                 portalItem: {
@@ -276,7 +283,23 @@
                     }
                 );
             }
-
+            let all_components = view.ui.components
+            view.watch("width", () => {
+                if (view.width <= 768) {
+                    // it's a small screen
+                    view.ui.components = ['attribution']
+                    view.ui.add(layerList, "top-right");
+                    view.ui.add(aboutSection, "top-left");
+                    view.ui.add(bookmarks, "bottom-left");
+                    view.ui.remove('aboutDiv', "top-left");
+                    view.ui.add(aboutSection, "top-left");
+                } else {
+                    //it's a big screen
+                    view.ui.components = all_components
+                    view.ui.move(["zoom"], "bottom-right");
+                    view.ui.move(layerList, "bottom-right");
+                }
+            });
         });
     </script>
 </head>
@@ -304,9 +327,9 @@
     <h3 style="text-align: center" id="current_bookmark">Detroit - Downtown</h3>
 
     <div style="text-align: center">
-        <p style="text-align: center; font-size: small"><a style="color: #d1d1d1a3;" href="https://arcg.is/1KTXeL0">Let us know</a> if we
+        <div style="text-align: center; font-size: small"><a style="color: #d1d1d1a3;" href="https://arcg.is/1KTXeL0">Let us know</a> if we
             missed
-            someplace cool! </p>
+            someplace cool! </div>
         <a href="https://arcg.is/1KTXeL0"><img style="width: 40px" src="qrcode.png"
                                                alt="qr code for https://arcg.is/1KTXeL0"></a>
     </div>
