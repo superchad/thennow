@@ -146,6 +146,13 @@
                 // allows bookmarks to be added, edited, or deleted
                 editingEnabled: false,
             });
+
+            let bookmarkExpand = new Expand({
+                expandIconClass: "esri-icon-bookmark",  // see https://developers.arcgis.com/javascript/latest/guide/esri-icon-font/
+                view: view,
+                content: bookmarks
+            });
+
             view.ui.add(bookmarks, "bottom-left");
 
             bookmarks.on("bookmark-select", function (event) {
@@ -289,10 +296,11 @@
                     // it's a small screen
                     view.ui.components = ['attribution']
                     view.ui.add(layerList, "top-right");
-                    view.ui.add(aboutSection, "top-left");
                     view.ui.add(bookmarks, "bottom-left");
                     view.ui.remove('aboutDiv', "top-left");
+                    view.ui.remove(bookmarks, "bottom-left");
                     view.ui.add(aboutSection, "top-left");
+                    view.ui.add(bookmarkExpand, "bottom-left");
                 } else {
                     //it's a big screen
                     view.ui.components = all_components
@@ -316,8 +324,7 @@
     <a style='float: right; color: #d1d1d1a3;' href="./"><span class="esri-widget button">Reset</span></a>
 
     <h2 style="text-align: center">Then and Now</h2>
-    <p style="font-size: .95em">Get lost in 1950 and see what a few curated places around Southeast Michigan looked like
-        compared to now.</p>
+    <p style="font-size: .95em">Get lost in 1950 and see what a few places around Southeast Michigan looked like Then and Now.</p>
     <h3 style="text-align: center" id="current_bookmark">Detroit - Downtown</h3>
 
 
