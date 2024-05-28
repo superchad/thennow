@@ -1,0 +1,97 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+
+    <title>SEMCOG Then and Now</title>
+
+    <meta name="description" content="Map showing images from 1950 throughout Southeast Michigan.">
+
+    <!-- Social sharing -->
+    <meta property="og:type" content="website"/> 
+    <meta property="og:title" content="Then and Now"/>
+    <meta property="og:description" content="Map showing images from 1950 throughout Southeast Michigan."/>
+    <meta property="og:site_name" content="SEMCOG.org" />
+    <meta property="og:url" content="https://maps.semcog.org/thennow/" />
+
+    <meta property="og:image" content="https://maps.semcog.org/thennow/Images/OGthennow.png"/>
+    <meta property="og:image:secure_url" content="https://maps.semcog.org/thennow/Images/OGthennow.png"/>
+    <meta property="og:image:alt" content="Map of images from 1950."/>
+    <meta property="og:image:width" content="1200"/>
+    <meta property="og:image:height" content="600"/>
+
+
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=yes">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    
+    <!-- You need the following 3 links for the split header -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.3/css/bootstrap.min.css" integrity="sha384-Zug+QiDoJOrZ5t4lssLdxGhVrurbmBWopoEl+M6BdEfwnCJZtKxi1KgxUyJq13dy"
+        crossorigin="anonymous">
+    <!-- SEMCOG header stylesheet -->
+    <link rel="stylesheet" type="text/css" href="https://maps.semcog.org/header/header.css">
+    <link href="style.css" type="text/css" rel="stylesheet" />
+
+    <script>
+        (function (i, s, o, g, r, a, m) {
+            i['GoogleAnalyticsObject'] = r;
+            i[r] = i[r] || function () {
+                (i[r].q = i[r].q || []).push(arguments)
+            }, i[r].l = 1 * new Date();
+            a = s.createElement(o),
+                m = s.getElementsByTagName(o)[0];
+            a.async = 1;
+            a.src = g;
+            m.parentNode.insertBefore(a, m)
+        })(window, document, 'script', '//www.google-analytics.com/analytics.js', 'ga');
+
+        ga('create', 'UA-5355512-14', 'auto');
+        ga('send', 'pageview');
+    </script>
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-CP6FSLCGWL"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+
+        function gtag() {
+            dataLayer.push(arguments);
+        }
+
+        gtag('js', new Date());
+        gtag('config', 'G-CP6FSLCGWL');
+    </script>
+</head>
+
+<body>
+
+    <!-- You need this HTML for the split header -->
+    <div class="container-fluid">
+        <header class="row" role="banner">
+            <div id="divLeft" class="col-xs-12 col-sm-6 col-md-6 col-lg-6 col-xl-6">
+                <div class="site-header" >
+                    <div class="header-container">
+                        <div class="container">
+                            <h1 class="site-title">
+                                <a href="//www.semcog.org" class="site-logo" target="_parent">
+                                    SEMCOG | Southeast Michigan Council of Governments
+                                </a>
+                            </h1>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div id="divRight" class="col-xs-2 col-sm-6 col-md-6 col-lg-6 col-xl-6">
+                <ul id="divRightContent">
+                    <li id="mapName">Then and Now</li>
+                </ul>
+            </div>
+        </header>
+    </div>
+
+
+    <main role="main">
+        <iframe title="Map showing images from 1950 throughout Southeast Michigan." src="index_no_header.html" allowfullscreen webkitallowfullscreen mozallowfullscreen oallowfullscreen msallowfullscreen></iframe>
+    </main>
+</body>
+
+</html>
