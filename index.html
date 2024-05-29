@@ -95,17 +95,6 @@
                 }
             });
 
-            let communityboundairesESRI = new VectorTileLayer({
-                url: "https://tiles.arcgis.com/tiles/xUx8EjNc6egUPYWh/arcgis/rest/services/Community_Boundaries/VectorTileServer"
-            });
-
-            let communityboundairesESRIBasemap = new Basemap({
-                baseLayers: [communityboundairesESRI],
-                title: "communityboundairesESRI",
-                id: "communityboundaires-esri",
-                //thumbnailUrl: "https://semcog.maps.arcgis.com/sharing/rest/content/items/6db68c2945dc4031a7f1817cf7d6a3d8/info/thumbnail/thumbnail1547041274700.png"
-            });
-
             const view = new MapView({
                 container: "viewDiv",
                 map: webmap,
@@ -116,17 +105,7 @@
                 zoom: 16,
                 center: [-83.04799999999994, 42.33168000000006], // longitude, latitude
             });
-            const homeBtn = new Home({
-                view: view
-            });
 
-            homeBtn.on('go', function () {
-                current_bookmark.innerText = "Detroit - Downtown"
-            })
-
-            // Add the home button to the top left corner of the view
-            view.ui.add(homeBtn, "bottom-right");
-            view.ui.move(["zoom"], "bottom-right");
             view.when(function () {
                 const then = webmap.layers.getItemAt(0);
                 then.listMode = 'hide-children'
@@ -141,6 +120,23 @@
                 // add the widget to the view
                 view.ui.add(swipe);
             })
+
+            // WIDGETS
+            const homeBtn = new Home({
+                view: view
+            });
+            //reset the text in the top left to the default when the home button is clicked
+            homeBtn.on('go', function () {
+                current_bookmark.innerText = "Detroit - Downtown"
+            })
+
+            // Add the home button to the top left corner of the view
+            view.ui.add(homeBtn, "bottom-right");
+
+            //move the zoom widget to the bottom right
+            view.ui.move(["zoom"], "bottom-right");
+
+
             const bookmarks = new Bookmarks({
                 view: view,
                 // allows bookmarks to be added, edited, or deleted
@@ -175,7 +171,6 @@
                 content: document.getElementById('aboutDiv')
             });
 
-
             const insetwebmap = new WebMap({
                 portalItem: {
                     // autocasts as new PortalItem()
@@ -191,11 +186,9 @@
                 }
             });
 
-            // Remove the default widgets
+            // Remove the default widgets and make sure the user cannot interact with the inset map
             insetView.ui.components = [];
-
             insetView.when(disableZooming)
-
             function disableZooming(view) {
 
                 // stops propagation of default behavior when an event fires
@@ -246,7 +239,7 @@
 
             insetView.when(() => {
                 view.when(() => {
-                    setup();
+                    setup();// add the extent box to the inset map
                 });
             });
 
@@ -290,6 +283,8 @@
                     }
                 );
             }
+
+            // check screen size to adjust widgets to fit better
             let all_components = view.ui.components
             view.watch("width", () => {
                 if (view.width <= 768) {
